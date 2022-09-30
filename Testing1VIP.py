@@ -4,7 +4,7 @@ import pytesseract
 import glob
 import pdb
 
-def cleanTempOutput(list):
+def removeSpecialChars(list):
     tempList = []
     for i in range(len(list)):
         temp = ''.join(filter(lambda x: x.isdigit(), list[i]))
@@ -15,15 +15,16 @@ def main():
     crop_path = '/Users/shaanchanchani/Desktop/VIP/VIPTest/CroppedImages/'
     resize_path = '/Users/shaanchanchani/Desktop/VIP/VIPTest/ResizedImages/'
     blur_crop_path = '/Users/shaanchanchani/Desktop/VIP/VIPTest/BlurredCroppedImages/'
-    blur_resize_path = '/Users/shaanchanchani/Desktop/VIP/VIPTest/BlurredResizedImages/'
+    blur_resized_path = '/Users/shaanchanchani/Desktop/VIP/VIPTest/BlurredResizedImages/'
 
     count = 0
 
-    cropOutputList = []
-    resizeOutputList = []
-    blurCropOutputList = []
-    blurResizeOutputList = []
-    correctOutputList = [8931,8529,7624,7926,9333,9132,8328] 
+    crop_OutputList = []
+    resized_OutputList = []
+    blur_crop_OutputList = []
+    blur_resized_OutputList = []
+    
+    expected_OutputList = [8931,8529,7624,7926,9333,9132,8328] 
 
     paths = sorted(glob.glob('/Users/shaanchanchani/Desktop/VIP/VIPTest/SevenFrames/*'))
 
@@ -38,54 +39,54 @@ def main():
         startColumn = 400 
         endColumn = 600
 
-        crop = img[startRow:endRow,startColumn:endColumn,:]
+        cropIm = img[startRow:endRow,startColumn:endColumn,:]
         
-        h, w, _ = crop.shape
-        resize = cv2.resize(crop, [3*w, 3*h]) #Resizes each crop by a scale factor of 3
+        h, w, _ = cropIm.shape
+        resizedIm = cv2.resize(cropIm, [3*w, 3*h]) #Resizes each crop by a scale factor of 3
         
-        blurCrop = cv2.GaussianBlur(resize,(5,5), 0) #Applies a 5x5 kernel gaussian blur to the resized cropped images
-        blurResize = cv2.GaussianBlur(resize,(5,5),0) 
+        blur_cropIm = cv2.GaussianBlur(cropIm,(5,5), 0) #Applies a 5x5 kernel gaussian blur to the resized cropped images
+        blur_resizedIm = cv2.GaussianBlur(resizedIm,(5,5),0) 
 
         custom_config = r'--oem 3 --psm 6'
         
         #Scanning Raw Crops
-        cropOutput = pytesseract.image_to_string(crop, config=custom_config)
-        cropOutputList.append(cropOutput)
+        cropOutput = pytesseract.image_to_string(cropIm, config=custom_config)
+        crop_OutputList.append(cropOutput)
 
         #Scanning Resized Crops
-        resizeOutput = pytesseract.image_to_string(resize, config=custom_config)
-        resizeOutputList.append(resizeOutput)
+        resizedOutput = pytesseract.image_to_string(resizedIm, config=custom_config)
+        resized_OutputList.append(resizedOutput)
 
         #Scanning Blurred Crops
-        blurCropOutput = pytesseract.image_to_string(blurCrop, config=custom_config)
-        blurCropOutputList.append(blurCropOutput)
+        blurCropOutput = pytesseract.image_to_string(blur_cropIm, config=custom_config)
+        blur_crop_OutputList.append(blurCropOutput)
 
         #Scanning Resized and Blurred Crops 
-        blurResizeOutput = pytesseract.image_to_string(blurResize, config=custom_config)
-        blurResizeOutputList.append(blurResizeOutput)
+        blurResizeOutput = pytesseract.image_to_string(blur_resizedIm, config=custom_config)
+        blur_resized_OutputList.append(blurResizeOutput)
 
         #cv2.imwrite(crop_path + "Crop"+ str(count) +".JPG",crop)
-        #cv2.imwrite(resize_path + "Resize"+ str(count) +".JPG",resize)
-        #cv2.imwrite(blur_crop_path + "BlurCrop"+ str(count) +".JPG",blurCrop)
-        #cv2.imwrite(blur_resize_path + "BlurResize"+ str(count) +".JPG",blurResize)
+        #cv2.imwrite(resize_path + "Resize"+ str(count) +".JPG",resized)
+        #cv2.imwrite(blur_crop_path + "BlurCrop"+ str(count) +".JPG",blur_crop)
+        #cv2.imwrite(blur_resized_path + "BlurResized"+ str(count) +".JPG",blur_resized)
     
-    cropOutputList = cleanTempOutput(cropOutputList)
-    resizeOutputList = cleanTempOutput(resizeOutputList)
-    blurCropOutputList = cleanTempOutput(blurCropOutputList)
-    blurResizeOutputList = cleanTempOutput(blurResizeOutputList)
+    crop_OutputList = removeSpecialChars(crop_OutputList)
+    resized_OutputList = removeSpecialChars(resized_OutputList)
+    blur_crop_OutputList = removeSpecialChars(blur_crop_OutputList)
+    blur_resized_OutputList = removeSpecialChars(blur_resized_OutputList)
 
-    np.save('cropOutputList.npy', cropOutputList)
-    np.save('resizeOutputList.npy', resizeOutputList)
-    np.save('blurCropOutputList.npy', blurCropOutputList)
-    np.save('blurResizeOutputList.npy', blurResizeOutputList)
+    np.save('crop_OutputList.npy', crop_OutputList)
+    np.save('resized_OutputList.npy', resized_OutputList)
+    np.save('blur_crop_OutputList.npy', blur_crop_OutputList)
+    np.save('blur_resized_OutputList.npy', blur_resized_OutputList)
 
-    testCrop = np.load('cropOutputList.npy')
-    testResize = np.load('resizeOutputList.npy')
-    testBlurC = np.load('blurCropOutputList.npy')
-    testBlurR = np.load('blurResizeOutputList.npy')
+    testCrop = np.load('crop_OutputList.npy')
+    testResize = np.load('resized_OutputList.npy')
+    testBlurC = np.load('blur_crop_OutputList.npy')
+    testBlurR = np.load('blur_resized_OutputList.npy')
 
     print("\nCorrect Output:\n")
-    print(correctOutputList)
+    print(expected_OutputList)
     print("\nOutput from raw crops:\n")
     print(testCrop)
     print("\nOutput from resized crops:\n")
