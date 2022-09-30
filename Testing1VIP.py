@@ -65,10 +65,10 @@ def main():
         blurResizeOutput = pytesseract.image_to_string(blur_resizedIm, config=custom_config)
         blur_resized_OutputList.append(blurResizeOutput)
 
-        cv2.imwrite(crop_path + "Crop"+ str(count) +".JPG",crop)
-        cv2.imwrite(resize_path + "Resize"+ str(count) +".JPG",resized)
-        cv2.imwrite(blur_crop_path + "BlurCrop"+ str(count) +".JPG",blur_crop)
-        cv2.imwrite(blur_resized_path + "BlurResized"+ str(count) +".JPG",blur_resized)
+        cv2.imwrite(crop_path + "Crop"+ str(count) +".JPG",cropIm)
+        cv2.imwrite(resize_path + "Resize"+ str(count) +".JPG",resizedIm)
+        cv2.imwrite(blur_crop_path + "BlurCrop"+ str(count) +".JPG",blur_cropIm)
+        cv2.imwrite(blur_resized_path + "BlurResized"+ str(count) +".JPG",blur_resizedIm)
     
     crop_OutputList = removeSpecialChars(crop_OutputList)
     resized_OutputList = removeSpecialChars(resized_OutputList)
