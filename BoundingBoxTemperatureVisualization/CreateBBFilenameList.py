@@ -47,10 +47,12 @@ def getTemperatures(video_names, bb_names, temperatures):
     return bb_temperatures
 
 def main():
-    errors = np.load("errors.npy")
-    video_temps_C = np.load("video_temps_C.npy")
-    video_temps_F = np.load("video_temps_F.npy")
-    video_names = np.load("video_names.npy")
+    cam_name = "3JUIL_Extracted_Data/"
+
+    errors = np.load(os.path.join(cam_name,"errors.npy"))
+    video_temps_C = np.load(os.path.join(cam_name,"video_temps_C.npy"))
+    video_temps_F = np.load(os.path.join(cam_name,"video_temps_F.npy"))
+    video_names = np.load(os.path.join(cam_name,"video_names.npy"))
 
     paths = "./data/bbs/2021_3JUIL_7AOU_ANTENNE_CAM1806_CARTE8_747848_1442645"
     paths = fnmatch.filter(os.listdir(paths), "*.jpg")
@@ -83,15 +85,8 @@ def main():
     print(f"Found BB Cel values: {len(bb_temperatures_C)}")
     print(f"Found BB Far values: {len(bb_temperatures_F)}")
 
-    np.save("bb_temperatures_F_filt.npy", bb_temperatures_F)
-    np.save("bb_temperatures_C_filt.npy", bb_temperatures_C)
-
-
-
-
-
-
-
+    np.save(os.path.join(cam_name,"bb_temperatures_F_filt.npy"), bb_temperatures_F)
+    np.save(os.path.join(cam_name,"bb_temperatures_C_filt.npy"), bb_temperatures_C)
 
 if __name__ == '__main__':
     main()
