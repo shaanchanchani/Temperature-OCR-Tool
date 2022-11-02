@@ -47,6 +47,8 @@ def removeSpecialChars(list):
     return tempList
 
 def main():
+    cam_name = "3JUIL_Extracted_Data/"
+
     paths = "./data/frames/2021_3JUIL_7AOU_ANTENNE_CAM1806_CARTE8_747848_1442645"
     files = fnmatch.filter(os.listdir(paths), "*1800.jpg")
 
@@ -60,9 +62,11 @@ def main():
         image_path = paths + '/' + image
         if(extract_temperature(image_path)): 
             video_temps.append(extract_temperature(image_path)) #Executes as long as our function does not return false for that frame
-        
-    np.save('video_names.npy',video_names)
-    np.save('video_temps.npy',video_temps)
+    
+    np.save(os.path.join(cam_name,'video_names.npy'),video_names)
+    np.save(os.path.join(cam_name,'video_temps.npy'),video_temps)
+
+    
 
 
 

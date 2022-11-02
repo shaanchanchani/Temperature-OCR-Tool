@@ -1,5 +1,6 @@
 import numpy as np
 import cv2
+import os
 from CreateTemperatureLists import removeSpecialChars
 
 '''Arguments take farenhight and celsius values. It converts the celsius values to farenheight and compares
@@ -21,8 +22,11 @@ def checkConversions(far, cel, names):
     return errors
 
 def main():
-    video_temps = np.load('video_temps.npy')#load file
-    video_names = np.load('video_names.npy')
+    cam_name = "3JUIL_Extracted_Data/"
+
+    video_temps = np.load(os.path.join(cam_name,'video_temps.npy'))  #load file
+    video_names = np.load(os.path.join(cam_name,'video_names.npy'))
+    
     video_temps_C = []
     video_temps_F = []
     
@@ -42,11 +46,12 @@ def main():
     video_temps_C = removeSpecialChars(video_temps_C)
     video_temps_F = removeSpecialChars(video_temps_F)
 
-    np.save("video_temps_C.npy", video_temps_C)
-    np.save("video_temps_F.npy", video_temps_F)
+    np.save(os.path.join(cam_name,'video_temps_C.npy'), video_temps_C)
+    np.save(os.path.join(cam_name,'video_temps_F.npy'), video_temps_F)
     
     errors = checkConversions(video_temps_F,video_temps_C,video_names)
-    np.save("errors.npy", errors)
+    
+    np.save(os.path.join(cam_name,'errors.npy'), errors)
     
     
 
