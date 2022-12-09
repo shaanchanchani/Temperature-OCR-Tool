@@ -1,3 +1,15 @@
+# Dataset Overview
+The data folder necessary to run the files in this repository resembles the following structure
+   
+    data
+    ├── bbs                       # Bounding boxes
+    ├── frames                    # Generated from videos with a sampling frequency of 90 frames
+    ├── stats                     # JSON file containing stats
+    └── videos                    # Videos from motion-triggered camera trap
+
+## Runner.py
+This file can be used to run each of the functions listed below:
+
 # OCR Calibration
 
 ## PytesseractTesting.py
