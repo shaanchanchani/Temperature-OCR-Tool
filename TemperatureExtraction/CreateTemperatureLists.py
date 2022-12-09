@@ -7,13 +7,22 @@ import pdb
 import pytesseract
 
 ''' 
+Function Name: extract_temperature(image_path)
+
+Input Argument(s):
+    image_path - path to an image 
+
+Output Argument(s): 
+    blurCropOutput - string 
+
  In PytesseractTesting.py, we found that applying a Gaussian blur to our images before feeding them to
  Pytesseract generates a more accurate output. The following function takes an image path as an input and
  starts by cropping the image at the location of the path down to only its temperature values. The temperature 
  values are located at the same position in each frame so we were able to hard-code the dimensions of our crop. 
  Next, the function utilizes cv2's Gaussian blur method to apply a 5x5 kernel blur to the crop. Finally, the 
- blurred-crop is sent to Pytessaract's image to string method (the OCR) and the function returns the output.
-'''  
+ blurred-crop is sent to Pytessaract's image to string method (the OCR) and the function returns the output as a string.
+'''
+
 def extract_temperature(image_path):
     img = cv2.imread(image_path)
     if (img.size == 0): #cv2's documentation for imread() specifies that an empty matrix is returned on error.
@@ -23,8 +32,8 @@ def extract_temperature(image_path):
         startRow = img.shape[0]-40 #Hard-coded variables to retrieve bottom 40 rows
         endRow = img.shape[0]
 
-        startColumn = 400 #Hard-coded variables to retrieve columns 400-600 
-        endColumn = 600
+        startColumn = 420 #Hard-coded variables to retrieve columns 400-600 
+        endColumn = 580
 
         cropIm = img[startRow:endRow,startColumn:endColumn,:] #Crops frame using hard-coded variables
 
@@ -35,22 +44,27 @@ def extract_temperature(image_path):
     
     return(blurCropOutput)
 
-'''
-Function copied from PytessaractTesting.py. Takes a list as an input, and returns the same list with 
-all special characters filtered out of each element.
-'''
-def removeSpecialChars(list):
-    tempList = []
-    for i in range(len(list)):
-        temp = ''.join(filter(lambda x: x.isdigit(), list[i]))
-        tempList.append(temp)
-    return tempList
+''' 
+Function Name: makeTemperatureList(inputPaths,outputPath)
 
-def main():
-    cam_name = "3JUIL_Extracted_Data/"
+Input Argument(s):
+    inputPaths - list of image paths
+    outputPath - folder to return data 
 
-    paths = "./data/frames/2021_3JUIL_7AOU_ANTENNE_CAM1806_CARTE8_747848_1442645"
-    files = fnmatch.filter(os.listdir(paths), "*1800.jpg")
+Output Argument(s): 
+   No return arguments, but 2 .npy list saves
+   video_names.npy - list of filenames (string)
+   video_temps.npy - list of temperatures in fahrenheit and celcius(string)
+
+This function starts by iterating through each image in our list of input paths.
+At each image, the filename is appended to a list and the extract_temperature() 
+function is called to append the image's temperature.
+'''
+def makeTemperatureList(inputPaths,outputPath):
+    #cam_name = "7AOU_Extracted_Data/"
+    #paths = "./data/frames/2021_7AOU_11SEP_ANTENNE_CAM1806_CARTE1806_747491_1442649"
+
+    files = fnmatch.filter(os.listdir(inputPaths), "*1800.jpg")
 
     video_names = []  # empty list of video file names
     video_temps = []  # empty list of temperatures per video
@@ -59,16 +73,11 @@ def main():
         video_name = image.split('_')[0]
         video_names.append(video_name)
 
-        image_path = paths + '/' + image
+        image_path = inputPaths + '/' + image
         if(extract_temperature(image_path)): 
             video_temps.append(extract_temperature(image_path)) #Executes as long as our function does not return false for that frame
     
-    np.save(os.path.join(cam_name,'video_names.npy'),video_names)
-    np.save(os.path.join(cam_name,'video_temps.npy'),video_temps)
+    np.save(os.path.join(outputPath,'video_names.npy'),video_names)
+    np.save(os.path.join(outputPath,'video_temps.npy'),video_temps)
 
     
-
-
-
-if __name__ == '__main__':
-    main()
