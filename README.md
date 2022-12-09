@@ -1,3 +1,8 @@
+# OCR Calibration
+
+## PytesseractTesting.py
+In this file we explore how Pytesseract, an Optical Character Recognition tool, responds to scanning images from our dataset. Using various combinations of standard image data preprocessing techniques (Gaussian Blur, Image Resizing, and Cropping), we scanned a sample dataset and evaluated the accuracy of each trial.
+
 # Temperature Extraction:
 
 ## CreateTemperatureLists.py
