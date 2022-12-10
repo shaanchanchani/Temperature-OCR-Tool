@@ -49,5 +49,5 @@ This function starts by iterating through each element in the celcius and fahren
 This function iterates through each element in each input lists and filters out the values from our list of error tuples.
 
 `getTemperatures(video_names, bb_names, temperatures)`
-This function iterates through each element in the list of bounding box filenames and each element of the list of video filenames. If a match between two elements is found, the value at the index position in the temperature list is added to the output list.
+This function iterates through each element in the list of bounding box filenames and each element of the list of video filenames. If a match between two elements is found, the value at the index position in the temperature list is added to the output list. test
 
