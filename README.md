@@ -51,3 +51,6 @@ This function iterates through each element in each input lists and filters out 
 `getTemperatures(video_names, bb_names, temperatures)`
 This function iterates through each element in the list of bounding box filenames and each element of the list of video filenames. If a match between two elements is found, the value at the index position in the temperature list is added to the output list.
 
+## TimesandTemp.py
+This file imports and processes time data for each camera trigger that is stored in the json file. This data is then extracted from the json and matched with the actual temperature values for each time which is then graphed.
+
