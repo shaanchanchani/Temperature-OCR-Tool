@@ -1,7 +1,6 @@
 import fnmatch
 import os
 import numpy as np
-import pdb 
 
 ''' 
 Function Name: filterErrors(video_names,bb_names,errors,video_temps_C,video_temps_F)
@@ -50,7 +49,7 @@ def filterErrors(video_names,bb_names,errors,video_temps_C, video_temps_F):
             video_names2.append(video_names[i])
             video_temps_F2.append(video_temps_F[i])
             video_temps_C2.append(video_temps_C[i])
-   # pdb.set_trace()
+
     return video_names2, bb_names2, video_temps_C2, video_temps_F2
 
 ''' 
@@ -101,9 +100,9 @@ to the output folder. It also creates 2 new lists to store temperature values wi
 with the list of bounding box filenames.
 '''
 def makeBBlists(outputPath,bbFramePath):
-    #cam_name = "3JUIL_Extracted_Data/"
 
-    errors = np.load(os.path.join(outputPath,"errors.npy"))
+    #errors = np.load(os.path.join(outputPath,"errors.npy"))
+    
     video_temps_C = np.load(os.path.join(outputPath,"video_temps_C.npy"))
     video_temps_F = np.load(os.path.join(outputPath,"video_temps_F.npy"))
     video_names = np.load(os.path.join(outputPath,"video_names.npy"))
@@ -117,33 +116,14 @@ def makeBBlists(outputPath,bbFramePath):
         filename = path.split('_')[0]
         bb_names.append(filename)
 
-    print(f"Number of errors: {len(errors)}")
-    print(f"BB Names before filter: {len(bb_names)}")
-    print(f"Celsius Temps before filter: {len(video_temps_C)}")
-    print(f"Far Temps before filter: {len(video_temps_F)}")
-    print(f"Vid Names before filter: {len(video_names)}")
-    print()
-        
-    video_names2, bb_names2, video_temps_C2, video_temps_F2 = filterErrors(video_names, bb_names, errors, video_temps_C, video_temps_F)
+    bb_temperatures_F = getTemperatures(video_names, bb_names, video_temps_F)
+    bb_temperatures_C = getTemperatures(video_names, bb_names, video_temps_C)
+
+
+    np.save(os.path.join(outputPath,"bb_temperatures_F.npy"), bb_temperatures_F)
+    np.save(os.path.join(outputPath,"bb_temperatures_C.npy"), bb_temperatures_C)
+    np.save(os.path.join(outputPath,"bb_names.npy"), bb_names)
     
-    # print()
-    print(f"BB Names after filter: {len(bb_names2)}")
-    # print(f"Celsius Temps after filter: {len(video_temps_C2)}")
-    print(f"Far Temps after filter: {len(video_temps_F2)}")
-    # print(f"Vid Names after filter: {len(video_names2)}")
-
-    bb_temperatures = []
-    baboon_temperatures_F = getTemperatures(video_names2, bb_names2, video_temps_F2)
-    baboon_temperatures_C = getTemperatures(video_names2, bb_names2, video_temps_C2)
-
-    print(f"Found BB Cel values: {len(baboon_temperatures_C)}")
-    print(f"Found BB Far values: {len(baboon_temperatures_F)}")
-
-    np.save(os.path.join(outputPath,"baboon_temperatures_F_filt.npy"), baboon_temperatures_F)
-    np.save(os.path.join(outputPath,"baboon_temperatures_C_filt.npy"), baboon_temperatures_C)
-    np.save(os.path.join(outputPath,"video_names_filt.npy"), video_names2)
-    np.save(os.path.join(outputPath,"video_temps_F_filt.npy"), video_temps_F2)
-    np.save(os.path.join(outputPath,"video_temps_C_filt.npy"), video_temps_C2)
-    np.save(os.path.join(outputPath,"baboon_names_filt.npy"), bb_names)
+    # np.save(os.path.join(outputPath,"baboon_names_filt.npy"), bb_names)
 
 

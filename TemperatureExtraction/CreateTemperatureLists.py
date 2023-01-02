@@ -61,10 +61,7 @@ At each image, the filename is appended to a list and the extract_temperature()
 function is called to append the image's temperature.
 '''
 def makeTemperatureList(inputPaths,outputPath):
-    #cam_name = "7AOU_Extracted_Data/"
-    #paths = "./data/frames/2021_7AOU_11SEP_ANTENNE_CAM1806_CARTE1806_747491_1442649"
-
-    files = fnmatch.filter(os.listdir(inputPaths), "*1800.jpg")
+    files = fnmatch.filter(os.listdir(inputPaths), "*0000.jpg")
 
     video_names = []  # empty list of video file names
     video_temps = []  # empty list of temperatures per video
@@ -76,8 +73,6 @@ def makeTemperatureList(inputPaths,outputPath):
         image_path = inputPaths + '/' + image
         if(extract_temperature(image_path)): 
             video_temps.append(extract_temperature(image_path)) #Executes as long as our function does not return false for that frame
-    
+
     np.save(os.path.join(outputPath,'video_names.npy'),video_names)
     np.save(os.path.join(outputPath,'video_temps.npy'),video_temps)
-
-    
