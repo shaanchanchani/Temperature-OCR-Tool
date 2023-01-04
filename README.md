@@ -9,11 +9,9 @@ The data folder necessary to run the files in this repository resembles the foll
 
 Sample frames from dataset:
 
-<div style="width: 60%; height: 60%">
-![07050017_0090 copy](https://user-images.githubusercontent.com/68445210/210634522-1c243b92-ccdc-42e2-818e-3609b9091839.jpeg)
+<img src="(https://user-images.githubusercontent.com/68445210/210634522-1c243b92-ccdc-42e2-818e-3609b9091839.jpeg" width=60% height=60%>
 
 ![07050026_0000 copy](https://user-images.githubusercontent.com/68445210/210635134-2ff47e17-6207-4c51-8ba0-a61734f8bebd.jpg)
-</div>
 
 ## Runner.py
 This file can be used to run each of the functions listed below:
