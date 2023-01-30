@@ -65,4 +65,3 @@ This file contains the functions used to generate the plots in the output folder
 
 #### TimesandTemp.py
 This file imports and processes time data for each camera trigger that is stored in the json file. This data is then extracted from the json and matched with the actual temperature values for each time which is then graphed.
-
